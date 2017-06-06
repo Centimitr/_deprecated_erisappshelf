@@ -10,26 +10,23 @@ class Book implements IBook {
 
 class Series implements ISeries {
   name = '';
+  books = [];
 
-  books() {
-    return new Promise<IBook[]>(res => res([]))
+  update() {
   }
 }
 
 class List implements IList {
   name = '';
+  items = [];
 
-  items() {
-    return new Promise<ISeries[]>(res => res([]))
+  update() {
   }
 }
 
 class Source implements ISource {
   name = 'XXX';
-
-  lists() {
-    return new Promise<IList[]>(res => res([]))
-  }
+  lists = [];
 }
 
 

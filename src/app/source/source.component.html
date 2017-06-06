@@ -1,0 +1,9 @@
+<div *ngFor="let source of sourceService.all()">
+  <div>{{source.name}}</div>
+  <div *ngFor="let list of source.lists">
+    <div (click)="list.update()">{{list.name}}</div>
+    <div *ngFor="let item of list.items">
+      <div>{{item.series.name}}</div>
+    </div>
+  </div>
+</div>

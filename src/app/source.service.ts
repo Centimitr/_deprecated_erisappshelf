@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {ISource} from './source/source';
-import Source1kkk from './source/1kkk';
+import {ISource} from '../source/source';
+import Source1kkk from '../source/1kkk';
 
 @Injectable()
 export class SourceService {
