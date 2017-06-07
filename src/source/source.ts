@@ -1,6 +1,7 @@
 interface IBook {
   name: string
-  save: (string) => Promise<void>
+  url: string
+  download: Function
 }
 
 interface ISeries {

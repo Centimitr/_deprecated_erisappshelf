@@ -21,7 +21,7 @@ export class SourceSeriesComponent implements OnChanges {
   }
 
   download(b: IBook) {
-    this.downloadService.addTask(b)
+    this.downloadService.add(b)
   }
 
 }

@@ -8,8 +8,10 @@ export class DownloadService {
   constructor() {
   }
 
-  addTask(b: IBook) {
-    this.books.push(b);
+  add(book: IBook) {
+    if (!this.books.some(b => b.url === book.url)) {
+      this.books.push(book);
+    }
   }
 
 }

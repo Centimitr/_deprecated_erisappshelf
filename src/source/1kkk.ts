@@ -18,8 +18,8 @@ class Book implements IBook {
     this.url = url;
   }
 
-  save(path: string) {
-    return new Promise<void>(res => res())
+  async download() {
+
   }
 }
 
@@ -27,6 +27,8 @@ class Series implements ISeries {
   name = '';
   url: string;
   books = [];
+  image: string;
+  meta: object = {};
   private _lock = new Lock();
 
   constructor(url: string) {
@@ -43,7 +45,7 @@ class Series implements ISeries {
       l.lock();
       const n = nm({show: false});
       try {
-        const bookValues = await n.goto(this.url)
+        const data = await n.goto(this.url)
           .kit.init()
           .wait('a.tg')
           .evaluate(function () {
@@ -52,17 +54,25 @@ class Series implements ISeries {
             const len = uls.length;
             const ul = len === 2 ? uls[1] : uls[0];
             const needReverse = len === 2;
-            const result = kit.toArray(ul.querySelectorAll('a.tg'))
+            const books = kit.toArray(ul.querySelectorAll('a.tg'))
               .map(a => ({
                 href: a.href,
                 name: a.innerText,
                 page: parseInt(a.nextSibling.textContent.match(/-?[1-9]\d*/).shift(), 10)
               }));
-            return needReverse ? result.reverse() : result;
+            const image = kit.asIf(kit.qs('.main .sy_k1.z img'), kit.imgToDataUrl);
+            const meta = {};
+            return {
+              image,
+              meta,
+              books: needReverse ? books.reverse() : books
+            }
           })
-        .end();
-        if (bookValues) {
-          this.books = bookValues.map(b => Book.from(b));
+          .end();
+        if (data) {
+          this.image = data.image;
+          this.meta = data.meta;
+          this.books = data.books.map(b => Book.from(b));
         }
       } catch (e) {
         console.warn(e);

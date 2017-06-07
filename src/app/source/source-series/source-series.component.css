@@ -30,10 +30,11 @@
 
 .left .img {
   margin: 16px 24px;
-  height: 320px;
 }
 
 .left .img img {
+  border: 1px solid #ccc;
+  padding: 2px;
   width: 100%;
   object-fit: contain;
 }
@@ -60,7 +61,7 @@
 .books {
   display: flex;
   flex-flow: column nowrap;
-  margin: 16px 24px;
+  margin: 38px 24px;
   border-radius: 4px;
   background-color: rgba(0, 0, 0, .07);
   padding: 12px 16px;
