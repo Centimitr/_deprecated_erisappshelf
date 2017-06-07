@@ -1,0 +1,27 @@
+<div class="box" *ngIf="!selectedSeries">
+  <div class="left">
+    <div *ngFor="let list of source?.lists;let i = index">
+      <div class="option" [class.selected]="selectedIndex===i" (mousedown)="activate(list, i)">
+        {{list.name}} {{list.loading()?'loading...':''}}
+      </div>
+    </div>
+  </div>
+  <div class="right">
+    <div *ngFor="let list of source?.lists;let i = index;">
+      <div *ngIf="selectedIndex===i">
+        <!--<div class="title">{{list.name}}</div>-->
+        <div class="list">
+          <div class="item" *ngFor="let item of list.items" (click)="select(item)">
+            <img src="{{item.series.image}}" alt="">
+            <div class="info">
+              <div class="name"> {{item.series.name}}</div>
+              <div class="note">Latest: {{item.book.name}}</div>
+              <div class="button">Download Latest</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-source-series *ngIf="selectedSeries" [series]="selectedSeries" (exit)="selectedSeries=null"></app-source-series>

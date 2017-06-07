@@ -1,0 +1,19 @@
+<div class="box">
+  <div class="left">
+    <div class="back" (click)="exit.emit()">Back</div>
+    <div class="img">
+      <img src="" alt="">
+    </div>
+    <div class="info">
+      name: {{series.name || 'Manga Title'}}
+    </div>
+  </div>
+  <article class="right">
+    <section class="books">
+      <div class="book" *ngFor="let b of series.books">
+        <div class="name">{{b.name}}</div>
+        <a class="button" (click)="download(b)">Download</a>
+      </div>
+    </section>
+  </article>
+</div>

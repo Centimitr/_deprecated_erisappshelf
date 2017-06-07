@@ -13,6 +13,7 @@ interface ISeries {
 interface IItemSeries {
   name: string
   href: string
+  image?: string
 }
 
 interface IItemBook {
@@ -28,6 +29,7 @@ interface IItem {
   series: IItemSeries
   book: IItemBook
   other: IItemOther
+  toSeries?: Function
 }
 
 interface IList {
