@@ -3,12 +3,13 @@ import {IBook} from '../source/source';
 
 @Injectable()
 export class DownloadService {
+  books: IBook[] = [];
 
   constructor() {
   }
 
   addTask(b: IBook) {
-    console.log(b);
+    this.books.push(b);
   }
 
 }

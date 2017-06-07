@@ -1,6 +1,8 @@
-<div class="tabs">
-  <div class="tab" *ngFor="let p of panels;let i = index;" (click)="setSelected(i)">{{p.name}}</div>
-</div>
+<header>
+  <div class="tabs">
+    <div class="tab"  *ngFor="let p of panels;let i = index;"  [class.active]="isSelected(i)" (click)="setSelected(i)">{{p.name}}</div>
+  </div>
+</header>
 <section class="wrapper">
   <app-shelf [hidden]="!isSelected(0)"></app-shelf>
   <app-source [hidden]="!isSelected(1)"></app-source>

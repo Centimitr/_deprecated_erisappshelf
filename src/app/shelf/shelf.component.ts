@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {DownloadService} from '../download.service';
 
 @Component({
   selector: 'app-shelf',
@@ -7,7 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ShelfComponent implements OnInit {
 
-  constructor() { }
+  constructor(public downloadService: DownloadService) {
+  }
 
   ngOnInit() {
   }

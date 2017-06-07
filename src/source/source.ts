@@ -8,6 +8,7 @@ interface ISeries {
   image?: string
   books: IBook[]
   update: Function;
+  loading: Function;
 }
 
 interface IItemSeries {
@@ -36,6 +37,7 @@ interface IList {
   name: string
   items: IItem[]
   update: Function;
+  loading: Function;
 }
 
 interface ISource {

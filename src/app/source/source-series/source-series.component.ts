@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, OnInit, Output, EventEmitter} from '@angular/core';
 import {IBook, ISeries} from '../../../source/source';
-import {DownloadService} from "../../download.service";
+import {DownloadService} from '../../download.service';
 
 @Component({
   selector: 'app-source-series',

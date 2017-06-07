@@ -82,18 +82,18 @@
 }
 
 .item .info .name {
-  font-size: 17px;
+  font-size: 15px;
   margin-bottom: 4px;
 }
 
 .item .info .note {
   color: #888;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .item .info .button {
   display: inline-block;
-  font-size: 14px;
+  font-size: 12px;
   padding: 0 12px;
   height: 24px;
   line-height: 24px;

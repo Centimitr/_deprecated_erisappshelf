@@ -5,11 +5,13 @@
       <img src="" alt="">
     </div>
     <div class="info">
-      name: {{series.name || 'Manga Title'}}
+      <div class="name">{{series.name}}</div>
     </div>
   </div>
   <article class="right">
     <section class="books">
+      <div class="note" *ngIf="!!series.loading()">loading...</div>
+      <div class="note" *ngIf="!series.loading()&&!series.books.length">No available manga book found!</div>
       <div class="book" *ngFor="let b of series.books">
         <div class="name">{{b.name}}</div>
         <a class="button" (click)="download(b)">Download</a>

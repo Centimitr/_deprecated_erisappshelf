@@ -5,3 +5,16 @@
   bottom: 0;
   left: 0;
 }
+
+.source {
+  margin: 32px 38px;
+  border-radius: 12px;
+  width: 160px;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+  font-size: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px 0 rgba(33, 33, 33, .2);
+  background-color: rgba(255, 255, 255, .65);
+}

@@ -4,5 +4,6 @@
   box-sizing: border-box;
   cursor: default;
   user-select: none;
-  /*font-family: 'SF Pro Text', 'SF Pro Icons', "PingFang SC", 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
+  font-size: 14px;
+  font-family: 'SF Pro SC', 'SF Pro Display', 'SF Pro Icons', 'PingFang SC', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }

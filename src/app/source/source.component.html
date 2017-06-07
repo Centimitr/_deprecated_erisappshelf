@@ -1,4 +1,4 @@
 <div [hidden]="selectedSource" *ngFor="let source of sourceService.all()">
-  <div (click)="select(source)">{{source.name}}</div>
+  <div class="source" (click)="select(source)">{{source.name}}</div>
 </div>
 <app-source-source [hidden]="!selectedSource" [source]="selectedSource"></app-source-source>
