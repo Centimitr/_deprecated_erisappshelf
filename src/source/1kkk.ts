@@ -86,7 +86,7 @@ class LatestList implements IList {
     const l = this._lock;
     if (l.available()) {
       l.lock();
-      const n = nm({show: true});
+      const n = nm({show: false});
       try {
         const itemValues = await n.goto(this.url)
           .kit.init()

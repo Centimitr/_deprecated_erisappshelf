@@ -7,13 +7,15 @@ import {SourceComponent} from './source/source.component';
 import {SourceSourceComponent} from './source/source-source/source-source.component';
 import {SourceSeriesComponent} from './source/source-series/source-series.component';
 import {DownloadService} from './download.service';
+import { ShelfComponent } from './shelf/shelf.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SourceComponent,
     SourceSourceComponent,
-    SourceSeriesComponent
+    SourceSeriesComponent,
+    ShelfComponent
   ],
   imports: [
     BrowserModule

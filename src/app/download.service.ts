@@ -8,6 +8,7 @@ export class DownloadService {
   }
 
   addTask(b: IBook) {
+    console.log(b);
   }
 
 }
