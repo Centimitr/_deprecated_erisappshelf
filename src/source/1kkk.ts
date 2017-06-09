@@ -1,12 +1,13 @@
 import {IBook, IItem, IList, ISeries, ISource} from './source';
 import nm from './nightmare';
-import {DownloadManager, Lock} from './util';
+import {DownloadManager, get, Lock} from './util';
+import args from '../app/args';
 
 class Book implements IBook {
   name: string;
   url: string;
   page: number;
-  manager = new DownloadManager(5);
+  manager = new DownloadManager(8);
 
   static from(obj: object) {
     const b = new Book(obj['href']);
@@ -32,13 +33,8 @@ class Book implements IBook {
       return path.resolve(os.tmpdir(), 'com.devbycm.eris', getUrlLastPart(this.url), filename);
     };
     const downloadFn = async function (url: string) {
-      const n = nm({
-        show: true, openDevTools: true, webPreferences: {
-          webSecurity: false,
-          nodeIntegration: true
-        }
-      });
-      const filePath = await n.goto(url)
+      const n = nm({webPreferences: {webSecurity: false, nodeIntegration: true}});
+      return await n.goto(url)
         .kit.init()
         .wait(function () {
           const kit = window['_cmViewKit'];
@@ -58,12 +54,30 @@ class Book implements IBook {
               reject('no img');
             }
           })
-        }, getTargetPath(getUrlLastPart(url)))
+        }, getTargetPath(getUrlLastPart(url) + '.webp'))
         .end();
-      return filePath;
     };
     this.manager.init(urls, downloadFn);
-    return await this.manager.run();
+    console.log('!start');
+    const imgPaths = await this.manager.run();
+    console.log('!Complete');
+    console.log(imgPaths);
+    // await args.wait();
+    console.log(args);
+    // await get(args.path, {method: 'PUT', body: form});
+    await fetch('https://localhost:3455/pack', {
+      method: 'PUT',
+      body: JSON.stringify({
+        dst: '/Users/shixiao/Eris/_test.eris',
+        bookMeta: {
+          Name: this.name,
+          Author: 'Unknown Author',
+          Publisher: 'Unknown Publisher',
+          Pages: imgPaths.map(p => ({Locator: p})),
+          LastRead: null
+        }
+      })
+    });
   }
 }
 
