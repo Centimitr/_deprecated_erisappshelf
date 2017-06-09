@@ -1,6 +1,9 @@
+import {DownloadManager} from './util';
+
 interface IBook {
   name: string
   url: string
+  manager: DownloadManager;
   download: Function
 }
 
@@ -45,6 +48,7 @@ interface ISource {
   name: string
   image?: string
   lists: IList[]
+  update: Function;
 }
 
 export {

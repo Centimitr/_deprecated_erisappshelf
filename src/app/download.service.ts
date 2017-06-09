@@ -8,9 +8,20 @@ export class DownloadService {
   constructor() {
   }
 
+  start() {
+
+  }
+
+  pause() {
+
+  }
+
   add(book: IBook) {
     if (!this.books.some(b => b.url === book.url)) {
       this.books.push(book);
+      if (1) {
+        book.download();
+      }
     }
   }
 

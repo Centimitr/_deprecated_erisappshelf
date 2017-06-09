@@ -1,11 +1,12 @@
 import {IBook, IItem, IList, ISeries, ISource} from './source';
 import nm from './nightmare';
-import {Lock} from './util';
+import {DownloadManager, Lock} from './util';
 
 class Book implements IBook {
   name: string;
   url: string;
   page: number;
+  manager = new DownloadManager(5);
 
   static from(obj: object) {
     const b = new Book(obj['href']);
@@ -19,7 +20,50 @@ class Book implements IBook {
   }
 
   async download() {
-
+    const front = this.url.slice(0, -1);
+    const urls = (new Array(this.page)).fill(0).map((v, i) => `${front}-p${i + 1}/`);
+    const getUrlLastPart = function (url: string) {
+      return url.split('/').filter(str => str.length).pop();
+    };
+    const getTargetPath = (filename: string) => {
+      const require = window['require'];
+      const os = require('os');
+      const path = require('path');
+      return path.resolve(os.tmpdir(), 'com.devbycm.eris', getUrlLastPart(this.url), filename);
+    };
+    const downloadFn = async function (url: string) {
+      const n = nm({
+        show: true, openDevTools: true, webPreferences: {
+          webSecurity: false,
+          nodeIntegration: true
+        }
+      });
+      const filePath = await n.goto(url)
+        .kit.init()
+        .wait(function () {
+          const kit = window['_cmViewKit'];
+          const img = kit.qs('#cpimg');
+          return img && img.complete;
+        })
+        .evaluate(function (path) {
+          const kit = window['_cmViewKit'];
+          const img = kit.qs('#cpimg');
+          return new Promise(function (resolve, reject) {
+            if (img) {
+              kit.getImgBuf(img).then(buf => {
+                kit.outputFileSync(path, buf);
+                resolve(path);
+              })
+            } else {
+              reject('no img');
+            }
+          })
+        }, getTargetPath(getUrlLastPart(url)))
+        .end();
+      return filePath;
+    };
+    this.manager.init(urls, downloadFn);
+    return await this.manager.run();
   }
 }
 
@@ -150,6 +194,9 @@ class Source implements ISource {
   constructor() {
   }
 
+  async update() {
+    await this.lists[0].update();
+  }
 }
 
 const Source1kkk = new Source();

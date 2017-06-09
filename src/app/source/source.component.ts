@@ -15,6 +15,7 @@ export class SourceComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.sourceService.all().forEach(s => s.update())
   }
 
   select(s: ISource) {

@@ -16,6 +16,7 @@ export class SourceService {
   }
 
   all(): ISource[] {
+    // this.sources.forEach(s => s.update());
     return this.sources;
   }
 

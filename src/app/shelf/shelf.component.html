@@ -1,1 +1,4 @@
-<div *ngFor="let b of downloadService.books">{{b | json}}</div>
+<div *ngFor="let b of downloadService.books">
+  <div>{{b.url}}-{{b.manager.completed()}}/{{b.manager.total()}}</div>
+  <div>{{b.manager.result().length}}</div>
+</div>
