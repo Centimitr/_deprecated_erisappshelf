@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {IBook} from '../source/source';
+import {IBook} from './entity/source';
 const path = window['require']('path');
 
 @Injectable()

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IItem, ISeries, ISource} from '../../../source/source';
+import {IItem, ISeries, ISource} from '../../entity/source';
 
 @Component({
   selector: 'app-source-source',

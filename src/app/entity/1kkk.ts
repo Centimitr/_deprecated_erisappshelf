@@ -1,20 +1,21 @@
-import {IBook, IItem, IList, ISeries, ISource} from './source';
+import {IBook, IItem, IList, ISeries, ISource, Progress} from './source';
 import nm from './nightmare';
 import {DownloadManager, get, Lock} from './util';
-import args from '../app/args';
+import args from '../args';
 import {Injectable} from '@angular/core';
-import {AppStorage, AppStorageValue} from '../app/storage.service';
+import {AppStorage, AppStorageValue} from '../storage.service';
 
 class Book implements IBook {
   name: string;
   url: string;
   page: number;
-  manager = new DownloadManager(8);
+  progress = new Progress();
 
   static from(obj: object) {
     const b = new Book(obj['href']);
     b.name = obj['name'];
     b.page = obj['page'];
+    b.progress.init(b.page);
     return b;
   }
 
@@ -23,46 +24,41 @@ class Book implements IBook {
   }
 
   async download(dst: string) {
-    const front = this.url.slice(0, -1);
-    const urls = (new Array(this.page)).fill(0).map((v, i) => `${front}-p${i + 1}/`);
-    const getUrlLastPart = function (url: string) {
-      return url.split('/').filter(str => str.length).pop();
-    };
     const getTargetPath = (filename: string) => {
+      const getUrlLastPart = function (url: string) {
+        return url.split('/').filter(str => str.length).pop();
+      };
       const require = window['require'];
       const os = require('os');
       const path = require('path');
       return path.resolve(os.tmpdir(), 'com.devbycm.eris', getUrlLastPart(this.url), filename);
     };
-    const downloadFn = async function (url: string) {
-      const n = nm({webPreferences: {webSecurity: false, nodeIntegration: true}});
-      return await n.goto(url)
-        .kit.init()
-        .wait(function () {
-          const kit = window['_cmViewKit'];
-          const img = kit.qs('#cpimg');
-          return img && img.complete;
-        })
+    const n = nm({show: true, webPreferences: {webSecurity: false, nodeIntegration: true}});
+    await n.goto(this.url).kit.init();
+    const imgPaths = [];
+    for (let p = 1; p <= this.page; p++) {
+      const imgPath = await n.wait('#cpimg')
         .evaluate(function (path) {
           const kit = window['_cmViewKit'];
           const img = kit.qs('#cpimg');
-          return new Promise(function (resolve, reject) {
-            if (img) {
-              kit.getImgBuf(img).then(buf => {
-                kit.outputFileSync(path, buf);
-                resolve(path);
-              })
-            } else {
-              reject('no img');
-            }
-          })
-        }, getTargetPath(getUrlLastPart(url) + '.webp'))
-        .end();
-    };
-    this.manager.init(urls, downloadFn);
-    console.log('!start');
-    const imgPaths = await this.manager.run();
-    console.log('!Complete');
+          let resolve;
+          const save = function () {
+            kit.getImgBuf(img).then(buf => {
+              kit.outputFileSync(path, buf);
+              resolve(path);
+            })
+          };
+          img.addEventListener('load', save);
+          if (img.complete) {
+            save()
+          }
+          return new Promise(r => resolve = r);
+        }, getTargetPath(`${p}.webp`));
+      await n.mousedown('#cpimg').wait(75).mouseup('#cpimg');
+      this.progress.completeOne();
+      imgPaths.push(imgPath);
+    }
+    await n.end();
     console.log(imgPaths);
     // await args.wait();
     console.log(args);

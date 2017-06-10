@@ -9,7 +9,7 @@ import {SourceSeriesComponent} from './source/source-series/source-series.compon
 import {DownloadService} from './download.service';
 import {ShelfComponent} from './shelf/shelf.component';
 import {AppStorage} from './storage.service';
-import {Source1kkk} from '../source/1kkk';
+import {Source1kkk} from './entity/1kkk';
 
 @NgModule({
   declarations: [

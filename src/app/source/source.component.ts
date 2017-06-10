@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {SourceService} from '../source.service';
-import {ISource} from '../../source/source';
+import {ISource} from '../entity/source';
 
 @Component({
   selector: 'app-source',

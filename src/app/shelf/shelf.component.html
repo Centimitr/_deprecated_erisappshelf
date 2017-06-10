@@ -1,4 +1,3 @@
 <div *ngFor="let b of downloadService.books">
-  <div>{{b.url}}-{{b.manager.completed()}}/{{b.manager.total()}}</div>
-  <div>{{b.manager.result().length}}</div>
+  <div>{{b.url}}-{{b.progress?.completed()}}/{{b.progress?.total()}}/{{b.progress?.ok()}}</div>
 </div>

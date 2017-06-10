@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, Output, EventEmitter} from '@angular/core';
-import {IBook, ISeries} from '../../../source/source';
+import {IBook, ISeries} from '../../entity/source';
 import {DownloadService} from '../../download.service';
 
 @Component({
