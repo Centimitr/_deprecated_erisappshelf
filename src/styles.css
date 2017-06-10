@@ -5,5 +5,7 @@
   cursor: default;
   user-select: none;
   font-size: 14px;
-  font-family: 'SF Pro SC', 'SF Pro Display', 'SF Pro Icons', 'PingFang SC', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  -webkit-user-select: none;
+  font-family: system, -apple-system, '.SFNSDisplay-Regular', 'Helvetica Neue', Helvetica, 'Segoe UI', sans-serif;
+  /*font-family: 'SF Pro SC', 'SF Pro Display', 'SF Pro Icons', 'PingFang SC', 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
 }

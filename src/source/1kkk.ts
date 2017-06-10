@@ -2,6 +2,8 @@ import {IBook, IItem, IList, ISeries, ISource} from './source';
 import nm from './nightmare';
 import {DownloadManager, get, Lock} from './util';
 import args from '../app/args';
+import {Injectable} from '@angular/core';
+import {AppStorage, AppStorageValue} from '../app/storage.service';
 
 class Book implements IBook {
   name: string;
@@ -20,7 +22,7 @@ class Book implements IBook {
     this.url = url;
   }
 
-  async download() {
+  async download(dst: string) {
     const front = this.url.slice(0, -1);
     const urls = (new Array(this.page)).fill(0).map((v, i) => `${front}-p${i + 1}/`);
     const getUrlLastPart = function (url: string) {
@@ -68,8 +70,8 @@ class Book implements IBook {
     await fetch('https://localhost:3455/pack', {
       method: 'PUT',
       body: JSON.stringify({
-        dst: '/Users/shixiao/Eris/_test.eris',
-        bookMeta: {
+        Dst: dst,
+        BookMeta: {
           Name: this.name,
           Author: 'Unknown Author',
           Publisher: 'Unknown Publisher',
@@ -143,8 +145,14 @@ class Series implements ISeries {
 class LatestList implements IList {
   name = 'Latest';
   url = 'http://www.1kkk.com/manhua-new/';
-  items = [];
+  items: IItem[];
   private _lock = new Lock();
+  private _s: AppStorageValue;
+
+  constructor(private s: AppStorage) {
+    // this._s = s.get('source.1kkk.latestList');
+    // this.items = this._s.get([]);
+  }
 
   loading() {
     return !this._lock.available();
@@ -189,6 +197,7 @@ class LatestList implements IList {
               return new Series(v.series.href);
             }
           }));
+          // this._s.set(this.items);
         }
       } catch (e) {
         console.warn(e)
@@ -198,20 +207,19 @@ class LatestList implements IList {
   }
 }
 
-class Source implements ISource {
+@Injectable()
+export class Source1kkk implements ISource {
   name = '1kkk';
-  lists: IList[] = [
-    new LatestList(),
-    new LatestList()
-  ];
+  lists: IList[];
 
-  constructor() {
+  constructor(private s: AppStorage) {
+    this.lists = [
+      new LatestList(s),
+      new LatestList(s)
+    ];
   }
 
   async update() {
     await this.lists[0].update();
   }
 }
-
-const Source1kkk = new Source();
-export default Source1kkk;

@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
 import {ISource} from '../source/source';
-import Source1kkk from '../source/1kkk';
+import {Source1kkk} from '../source/1kkk';
 
 @Injectable()
 export class SourceService {
 
   private sources: ISource[] = [];
 
-  constructor() {
-    this.register(Source1kkk);
+  constructor(private s1kkk: Source1kkk) {
+    this.register(s1kkk);
   }
 
   get(name: string) {

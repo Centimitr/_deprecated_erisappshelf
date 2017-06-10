@@ -210,7 +210,8 @@ const nm = function (config?: object) {
     dock: false,
     show: false,
     webPreferences: {
-      webSecurity: false
+      webSecurity: false,
+      plugins: false
     }
   };
   return Nightmare(Object.assign(defaultConfig, config))
