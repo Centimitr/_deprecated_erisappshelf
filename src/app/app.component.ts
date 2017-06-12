@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import args from './args';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,12 @@ import {Component} from '@angular/core';
 export class AppComponent {
   selected = 0;
   panels = [{name: 'shelf'}, {name: 'source'}];
+
+  constructor() {
+    (async function () {
+      await args.wait();
+    })()
+  }
 
   setSelected(index: number) {
     this.selected = index;

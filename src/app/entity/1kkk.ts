@@ -59,11 +59,8 @@ class Book implements IBook {
       imgPaths.push(imgPath);
     }
     await n.end();
-    console.log(imgPaths);
-    // await args.wait();
-    console.log(args);
-    // await get(args.path, {method: 'PUT', body: form});
-    await fetch('https://localhost:3455/pack', {
+    await args.wait();
+    await fetch(`https://localhost:${args.port}/pack`, {
       method: 'PUT',
       body: JSON.stringify({
         Dst: dst,
@@ -86,9 +83,16 @@ class Series implements ISeries {
   image: string;
   meta: object = {};
   private _lock = new Lock();
+  private _s: AppStorageValue;
 
-  constructor(url: string) {
+  constructor(url: string, s: AppStorage) {
     this.url = url;
+    this._s = s.get(`source.1kkk.series.${this.url}`);
+    (async () => {
+      await this._lock.use(async () => {
+        // const c = await this._s.get();
+      });
+    })();
   }
 
   loading() {
@@ -147,17 +151,28 @@ class LatestList implements IList {
 
   constructor(private s: AppStorage) {
     // this._s = s.get('source.1kkk.latestList');
-    // this.items = this._s.get([]);
+    // (async () => {
+    //   await this._lock.use(async () => {
+    // const itemValues = await this._s.get([]);
+    // this.items = this.itemValuesRestore(itemValues);
+    // });
+    // })();
   }
 
   loading() {
     return !this._lock.available();
   }
 
+  itemValuesRestore(itemValues) {
+    return itemValues.map(v => Object.assign(v, {
+      toSeries() {
+        return new Series(v.series.href, this.s);
+      }
+    }));
+  }
+
   async update() {
-    const l = this._lock;
-    if (l.available()) {
-      l.lock();
+    await this._lock.use(async () => {
       const n = nm({show: false});
       try {
         const itemValues = await n.goto(this.url)
@@ -188,18 +203,13 @@ class LatestList implements IList {
             });
           }).end();
         if (itemValues) {
-          this.items = itemValues.map(v => Object.assign(v, {
-            toSeries() {
-              return new Series(v.series.href);
-            }
-          }));
-          // this._s.set(this.items);
+          this.items = this.itemValuesRestore(itemValues);
+          // await this._s.set(itemValues);
         }
       } catch (e) {
         console.warn(e)
       }
-      l.unlock();
-    }
+    });
   }
 }
 

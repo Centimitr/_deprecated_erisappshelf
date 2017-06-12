@@ -8,7 +8,7 @@ import {IItem, ISeries, ISource} from '../../entity/source';
 })
 export class SourceSourceComponent implements OnInit {
 
-  @Input() source: ISource;
+  @Input() source: any;
   selectedSeries: ISeries;
   selectedIndex = 0;
 

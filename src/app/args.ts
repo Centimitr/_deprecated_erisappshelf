@@ -1,6 +1,6 @@
 const {ipcRenderer} = window['require']('electron');
 
-export class Args {
+class Args {
   path: string;
   port: number;
   _promise: Promise<any>;
@@ -13,7 +13,7 @@ export class Args {
   }
 
   check() {
-    if (this._resolve && this.sema >= 2) {
+    if (this._resolve && this.sema >= 1) {
       this._resolve();
     }
   }
@@ -34,18 +34,18 @@ export class Args {
 
 const args: Args = new Args();
 
-ipcRenderer.on('path', (event, message) => {
-  console.warn('PATH:', message);
-  args.path = message;
-  args.execOnPath();
+console.log('listen!');
+// ipcRenderer.on('port', (event, message) => {
+//   console.warn('PORT:', message);
+//   args.port = message;
+//   args.sema++;
+//   args.check();
+// });
+ipcRenderer.on('res', (event, port) => {
+  console.warn('PORT:', port);
+  args.port = port;
   args.sema++;
   args.check();
 });
-ipcRenderer.on('port', (event, message) => {
-  console.warn('PORT:', message);
-  args.port = message;
-  args.sema++;
-  args.check();
-});
-
+ipcRenderer.send('req', 'port');
 export default args;

@@ -1,9 +1,5 @@
 import {Injectable} from '@angular/core';
-
-export interface KeyValue<T, U> {
-  key: T;
-  value: U;
-}
+import * as localforage from 'localforage';
 
 export class AppStorageValue {
   private v: any;
@@ -13,19 +9,20 @@ export class AppStorageValue {
   constructor(public k: string, private driver: AppStorage) {
   }
 
-  get(defaultValue?: any) {
+  async get(defaultValue?: any) {
     if (!this.cached) {
-      this.v = this.driver.read(this.k, defaultValue);
+      this.v = await this.driver.read(this.k, defaultValue);
+      console.log(this.v);
       this.cached = true;
     }
     return this.v;
   }
 
-  set(v: any) {
+  async set(v: any) {
     const old = this.v;
     this.v = v;
-    this.cached = true;
-    this.driver.write(this.k, v);
+    this.cached = false;
+    await this.driver.write(this.k, v);
     if (old !== v) {
       this._onChange.forEach(cb => cb(v, old));
     }
@@ -41,18 +38,23 @@ export class AppStorageValue {
   }
 }
 
+
 @Injectable()
 export class AppStorage {
   m = new Map<string, AppStorageValue>();
-  s = window.localStorage;
+  s = localforage;
 
-  write(key: string, value: any) {
-    return this.s.setItem(key, JSON.stringify(value));
+  async write(key: string, value: any) {
+    return this.s.setItem(key, value);
   }
 
-  read(key: string, defaultValue: any = null): any {
-    const v = this.s.getItem(key);
-    return JSON.parse(v !== null ? v : typeof defaultValue === 'string' ? defaultValue : JSON.stringify(defaultValue));
+  async read(key: string, defaultValue: any = null) {
+    let v = await this.s.getItem(key);
+    if (v === null && defaultValue !== null) {
+      v = defaultValue;
+      await this.write(key, defaultValue)
+    }
+    return v;
   }
 
   get(key: string) {

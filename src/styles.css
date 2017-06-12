@@ -9,3 +9,12 @@
   font-family: system, -apple-system, '.SFNSDisplay-Regular', 'Helvetica Neue', Helvetica, 'Segoe UI', sans-serif;
   /*font-family: 'SF Pro SC', 'SF Pro Display', 'SF Pro Icons', 'PingFang SC', 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
 }
+
+a {
+  color: rgb(3, 102, 214);
+  cursor: pointer;
+}
+
+a:hover {
+  text-decoration: underline;
+}

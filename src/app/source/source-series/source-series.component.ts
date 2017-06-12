@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, OnInit, Output, EventEmitter} from '@angular/core';
-import {IBook, ISeries} from '../../entity/source';
 import {DownloadService} from '../../download.service';
+import {IBook} from '../../entity/source';
 
 @Component({
   selector: 'app-source-series',
@@ -9,7 +9,7 @@ import {DownloadService} from '../../download.service';
 })
 export class SourceSeriesComponent implements OnChanges {
   @Output() exit = new EventEmitter<void>();
-  @Input() series: ISeries;
+  @Input() series: any;
 
   constructor(private downloadService: DownloadService) {
   }

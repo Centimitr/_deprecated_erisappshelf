@@ -2,21 +2,21 @@
   <div class="left">
     <div *ngFor="let list of source?.lists;let i = index">
       <div class="option" [class.selected]="selectedIndex===i" (mousedown)="activate(list, i)">
-        {{list.name}} {{list.loading()?'loading...':''}}
+        {{list?.name}} {{list.loading()?'loading...':''}}
       </div>
     </div>
   </div>
   <div class="right">
     <div *ngFor="let list of source?.lists;let i = index;">
-      <div *ngIf="selectedIndex===i">
+      <div class="list-wrapper" *ngIf="selectedIndex===i">
         <!--<div class="title">{{list.name}}</div>-->
         <div class="list">
-          <div class="item" *ngFor="let item of list.items" (click)="select(item)">
-            <img src="{{item.series.image}}" alt="">
+          <div class="item" *ngFor="let item of list?.items">
+            <img (click)="select(item)" src="{{item?.series.image}}" alt="">
             <div class="info">
-              <div class="name"> {{item.series.name}}</div>
-              <div class="note">Latest: {{item.book.name}}</div>
-              <div class="button">Download Latest</div>
+              <div class="name" (click)="select(item)"> {{item?.series.name}}</div>
+              <div class="note">Latest: {{item?.book.name}}</div>
+              <a class="detail" (click)="select(item)">See Detail</a>
             </div>
           </div>
         </div>

@@ -12,6 +12,14 @@ export class Lock {
   available(): boolean {
     return this.l === false;
   }
+
+  async use(fn: Function) {
+    if (this.available()) {
+      this.lock();
+      await fn();
+      this.unlock();
+    }
+  }
 }
 
 enum DownloadState {
