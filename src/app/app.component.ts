@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
 import args from './args';
+import {SourceService} from './source.service';
+import {ISource} from './entity/source';
 
 @Component({
   selector: 'app-root',
@@ -7,20 +9,19 @@ import args from './args';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  selected = 0;
-  panels = [{name: 'shelf'}, {name: 'source'}];
+  selectedSource: ISource;
 
-  constructor() {
+  constructor(public sourceService: SourceService) {
     (async function () {
       await args.wait();
     })()
   }
 
-  setSelected(index: number) {
-    this.selected = index;
+  select(s?: ISource) {
+    this.selectedSource = s;
   }
 
-  isSelected(index: number) {
-    return index === this.selected;
+  isSelected(s: ISource) {
+    return this.selectedSource === s;
   }
 }

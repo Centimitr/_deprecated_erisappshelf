@@ -1,9 +1,16 @@
 <header>
   <div class="tabs">
-    <div class="tab"  *ngFor="let p of panels;let i = index;"  [class.active]="isSelected(i)" (click)="setSelected(i)">{{p.name}}</div>
+    <div class="tab" [class.active]="!selectedSource" (click)="select()">Library</div>
+    <div class="tab"
+         *ngFor="let source of sourceService.all()"
+         [class.active]="isSelected(source)"
+         (click)="select(source)">{{source.name}}
+    </div>
   </div>
 </header>
 <section class="wrapper">
-  <app-shelf [hidden]="!isSelected(0)"></app-shelf>
-  <app-source [hidden]="!isSelected(1)"></app-source>
+  <app-shelf [hidden]="selectedSource"></app-shelf>
+  <app-source-source *ngFor="let source of sourceService.all()"
+                     [hidden]="!isSelected(source)"
+                     [source]="source"></app-source-source>
 </section>
