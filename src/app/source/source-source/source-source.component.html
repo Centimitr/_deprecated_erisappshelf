@@ -6,9 +6,11 @@
       </div>
     </div>
   </div>
-  <div class="right">
-    <div *ngFor="let list of source?.lists;let i = index;">
-      <div class="list-wrapper" *ngIf="selectedIndex===i">
+  <div class="right" *ngFor="let list of source?.lists;let i = index;">
+    <div *ngIf="selectedIndex===i">
+      <div class="loading" *ngIf="list?.loading()">LOADING...</div>
+
+      <div class="list-wrapper">
         <!--<div class="title">{{list.name}}</div>-->
         <div class="list">
           <div class="item" *ngFor="let item of list?.items">
